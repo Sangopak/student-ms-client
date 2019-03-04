@@ -11,6 +11,18 @@
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.0.4.RELEASE</version>
   </parent>
+  
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>org.springframework.cloud</groupId>
+  			<artifactId>spring-cloud-dependencies</artifactId>
+  			<version>Finchley.RELEASE</version>
+  			<type>pom</type>
+  			<scope>import</scope>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
    
 <dependencies>
 	<dependency>
@@ -20,6 +32,10 @@
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-web</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-data-jpa</artifactId>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
@@ -34,18 +50,12 @@
 	</dependency>	
 	<dependency>
 	    <groupId>org.springframework.cloud</groupId>
-	    <artifactId>spring-cloud-config-client</artifactId>
-	    <version>2.0.1.RELEASE</version>
+	    <artifactId>spring-cloud-config-client</artifactId>	    
 	</dependency>
 	<dependency>
 	    <groupId>org.springframework.cloud</groupId>
-	    <artifactId>spring-cloud-starter-openfeign</artifactId>
-	    <version>2.0.1.RELEASE</version>
+	    <artifactId>spring-cloud-starter-openfeign</artifactId>	    
 	</dependency>	
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-data-jpa</artifactId>
-	</dependency>
 	<dependency>
 		<groupId>com.h2database</groupId>
 		<artifactId>h2</artifactId>

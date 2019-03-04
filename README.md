@@ -4,6 +4,7 @@ Client that calls Student Detail and Student Score microservices
 ## Getting started 
 * First we used the RestTemplate to hook up the client
 * Then we will hook up Feign Client
+* We will be adding Ribbon Client side load balancing
 * Then we will add Hystrix
 * TBD
 
