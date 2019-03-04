@@ -40,11 +40,11 @@ public class StudentClientController {
 		return response;
 	}
 	
-/*	@GetMapping(path="/students/{id}",produces="application/json")
+	@GetMapping(path="/students/{id}",produces="application/json")
 	public Optional<StudentDetailResponse> getStudentByIdFromStudentDetailFeign(@PathVariable String id) {
 		Optional<StudentDetailResponse> studentById = studentDetailProxyService.getStudentById(id);
 		return studentById;
-	}*/
+	}
 	
 	
 }

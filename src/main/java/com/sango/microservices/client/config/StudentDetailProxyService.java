@@ -17,7 +17,7 @@ public interface StudentDetailProxyService {
 	@GetMapping(path="/v1/api/students", produces="application/json")
 	public List<StudentDetailResponse> getAllStudents();
 	
-	/*@GetMapping(path="/v1/api/students/{id}",produces="application/json")
-	public Optional<StudentDetailResponse> getStudentById(@PathVariable String id);
-*/
+	@GetMapping(path="/v1/api/students/{id}",produces="application/json")
+	public Optional<StudentDetailResponse> getStudentById(@PathVariable(value="id") String id);
+
 }
