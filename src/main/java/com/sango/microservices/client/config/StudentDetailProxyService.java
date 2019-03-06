@@ -15,8 +15,8 @@ import com.sango.microservices.client.model.StudentDetailResponse;
 		name = "student-detail-service",
 		url = "http://localhost:8080"
 		)*/
-@FeignClient(name="student-detail-service")
-@RibbonClient(name="student-detail-service")
+@FeignClient(name="student-detail-service-local")
+@RibbonClient(name="student-detail-service-local")
 public interface StudentDetailProxyService {
 	@GetMapping(path="/v1/api/students", produces="application/json")
 	public List<StudentDetailResponse> getAllStudents();
