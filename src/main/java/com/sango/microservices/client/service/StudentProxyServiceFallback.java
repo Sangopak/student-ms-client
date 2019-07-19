@@ -6,13 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
 @Component
-public class StudentDetailProxyServiceFallback implements StudentDetailProxyService {
+public class StudentProxyServiceFallback implements StudentProxyService {
 
     @Autowired
     private StudentRepository studentRepository;
@@ -20,14 +21,12 @@ public class StudentDetailProxyServiceFallback implements StudentDetailProxyServ
     @Override
     public List<Student> getAllStudents() {
         log.error("Fallback method triggered for getAllStudents, getting data from local data store");
-        List<Student> studentListFromLocalDataStore = studentRepository.findAll();
-        return studentListFromLocalDataStore;
+        return new ArrayList<>();
     }
 
     @Override
     public Optional<Student> getStudentById(String id) {
         log.error("Fallback method triggered for getStudentById for if {}",id);
-        Optional<Student> studentByIdFromLocalDataStore = studentRepository.findById(UUID.fromString(id));
-        return studentByIdFromLocalDataStore;
+        return Optional.empty();
     }
 }

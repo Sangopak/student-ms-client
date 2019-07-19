@@ -15,9 +15,9 @@ import com.sango.microservices.client.model.Student;
 		name = "student-detail-service",
 		url = "http://localhost:8080"
 		)*/
-@FeignClient(name="student-detail-service", fallback = StudentDetailProxyServiceFallback.class)
+@FeignClient(name="student-detail-service", fallback = StudentProxyServiceFallback.class)
 @RibbonClient(name="student-detail-service")
-public interface StudentDetailProxyService {
+public interface StudentProxyService {
 	@GetMapping(path="/v1/api/students", produces="application/json")
 	List<Student> getAllStudents();
 	
