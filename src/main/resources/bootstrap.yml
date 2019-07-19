@@ -4,7 +4,10 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
 server:
   servlet:
     context-path: /v1
- 

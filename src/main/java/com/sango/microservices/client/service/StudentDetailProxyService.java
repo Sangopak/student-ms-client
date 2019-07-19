@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.sango.microservices.client.model.StudentDetailResponse;
+import com.sango.microservices.client.model.Student;
 
 /*Removing the url as Ribbon would use a property - <RemoteServiceId.ribbon.listOfServers="http://localhost:8080","http://localhost:8081"> */
 /*@FeignClient(
@@ -19,9 +19,9 @@ import com.sango.microservices.client.model.StudentDetailResponse;
 @RibbonClient(name="student-detail-service")
 public interface StudentDetailProxyService {
 	@GetMapping(path="/v1/api/students", produces="application/json")
-	List<StudentDetailResponse> getAllStudents();
+	List<Student> getAllStudents();
 	
 	@GetMapping(path="/v1/api/students/{id}",produces="application/json")
-	Optional<StudentDetailResponse> getStudentById(@PathVariable(value="id") String id);
+	Optional<Student> getStudentById(@PathVariable(value="id") String id);
 
 }
