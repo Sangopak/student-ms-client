@@ -1,29 +1,26 @@
 package com.sango.microservices.client.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import com.sango.microservices.client.model.Student;
 import com.sango.microservices.client.model.StudentResponse;
 import com.sango.microservices.client.repository.StudentRepository;
+import com.sango.microservices.client.service.OauthService;
+import com.sango.microservices.client.service.StudentProxyService;
 import com.sango.microservices.client.util.ObjectMapperUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.sango.microservices.client.service.StudentProxyService;
+import java.util.*;
 
 @Slf4j
 @RestController
 @RequestMapping(path="/client")
 public class StudentClientController {
-	//private static final Logger log = LoggerFactory.getLogger(StudentClientController.class);
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -34,13 +31,23 @@ public class StudentClientController {
 	@Autowired
 	private StudentRepository studentRepository;
 
-	/*Rest Template example where we need to define the response, url in the rest template */	
-	/*@GetMapping(path="/resttemplate/students",produces="application/json")
+	@Autowired
+	private OauthService oauthService;
+
+/*	Rest Template example where we need to define the response, url in the rest template */
+	@GetMapping(path="/resttemplate/students",produces="application/json")
 	public List<StudentResponse> getAllStudentsFromStudentDetail(){
-		ResponseEntity<StudentResponse [] > response = restTemplate.getForEntity("http://localhost:8080/v1/api/students",
+		String plainClientCredentials="barClientIdPassword:secret";
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		httpHeaders.add("Authorization","Bearer "+oauthService.getOauthTokenFromAuthServer(plainClientCredentials));
+		HttpEntity<String> httpEntity = new HttpEntity<String>(httpHeaders);
+		ResponseEntity<StudentResponse [] > response = restTemplate.exchange("http://localhost:8080/v1/api/students",
+																						HttpMethod.GET,
+																						httpEntity,
 																						StudentResponse[].class);
 		return Arrays.asList(response.getBody());
-	}*/
+	}
 	
 	/*Feign Client approach is very clean where define a service proxy interface*/
 	@GetMapping(path="/students",produces="application/json")
