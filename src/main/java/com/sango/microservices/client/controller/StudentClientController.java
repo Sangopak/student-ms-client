@@ -9,6 +9,7 @@ import com.sango.microservices.client.service.StudentProxyService;
 import com.sango.microservices.client.util.ObjectMapperUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ import java.util.*;
 @RestController
 @RequestMapping(path="/client")
 public class StudentClientController {
-	
+
 	@Autowired
 	private RestTemplate restTemplate;
 	
@@ -38,10 +39,10 @@ public class StudentClientController {
 /*	Rest Template example where we need to define the response, url in the rest template */
 	@GetMapping(path="/resttemplate/students",produces="application/json")
 	public StudentResponse getAllStudentsFromStudentDetail(){
-		String plainClientCredentials="studentClientIdPassword:secret";
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		httpHeaders.add("Authorization","Bearer "+oauthService.getOauthTokenFromAuthServer(plainClientCredentials));
+		httpHeaders.add("Authorization",
+				"Bearer "+oauthService.getOauthTokenFromAuthServer());
 		HttpEntity<String> httpEntity = new HttpEntity<String>(httpHeaders);
 		ResponseEntity<StudentResponse> response = restTemplate.exchange("http://localhost:8080/v1/api/students",
 																						HttpMethod.GET,
@@ -54,12 +55,12 @@ public class StudentClientController {
 	/*Feign Client approach is very clean where define a service proxy interface*/
 	@GetMapping(path="/students",produces="application/json")
 	public List<StudentDTO> getAllStudentsFromStudentDetailFeign(){
-		List<Student> studentList = studentDetailProxyService.getAllStudents();
+		StudentResponse studentList = studentDetailProxyService.getAllStudents();
 		List<StudentDTO> response = new ArrayList<>();
-		if (!studentList.isEmpty()) {
+		if (!studentList.getStudents().isEmpty()) {
 			log.info("From getAllStudentsFromStudentDetailFeign response count: {} , will store data locally to handle failure scenarios",response.size());
 			try{
-				for (Student student: studentList) {
+				for (Student student: studentList.getStudents()) {
 					StudentDTO studentDetailResponse = ObjectMapperUtility.transformStudentToStudentResponse(student);
 					response.add(studentDetailResponse);
 				}

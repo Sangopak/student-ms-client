@@ -3,6 +3,8 @@ package com.sango.microservices.client.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.sango.microservices.client.config.ClientCredentialsConfiguration;
+import com.sango.microservices.client.model.StudentResponse;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +17,13 @@ import com.sango.microservices.client.model.Student;
 		name = "student-detail-service",
 		url = "http://localhost:8080"
 		)*/
-@FeignClient(name="student-detail-service", fallback = StudentProxyServiceFallback.class)
+@FeignClient(name="student-detail-service"
+		, fallback = StudentProxyServiceFallback.class
+		, configuration = ClientCredentialsConfiguration.class)
 @RibbonClient(name="student-detail-service")
 public interface StudentProxyService {
 	@GetMapping(path="/v1/api/students", produces="application/json")
-	List<Student> getAllStudents();
+	StudentResponse getAllStudents();
 	
 	@GetMapping(path="/v1/api/students/{id}",produces="application/json")
 	Optional<Student> getStudentById(@PathVariable(value="id") String id);

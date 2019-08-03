@@ -1,6 +1,7 @@
 package com.sango.microservices.client.service;
 
 import com.sango.microservices.client.model.Student;
+import com.sango.microservices.client.model.StudentResponse;
 import com.sango.microservices.client.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,10 @@ import java.util.UUID;
 @Component
 public class StudentProxyServiceFallback implements StudentProxyService {
 
-    @Autowired
-    private StudentRepository studentRepository;
-
     @Override
-    public List<Student> getAllStudents() {
+    public StudentResponse getAllStudents() {
         log.error("Fallback method triggered for getAllStudents, getting data from local data store");
-        return new ArrayList<>();
+        return new StudentResponse();
     }
 
     @Override

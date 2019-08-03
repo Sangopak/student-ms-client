@@ -11,7 +11,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
-public class OauthSecurityClientConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityClientConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() throws Exception {
