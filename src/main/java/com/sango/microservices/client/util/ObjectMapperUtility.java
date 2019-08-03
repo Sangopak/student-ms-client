@@ -1,29 +1,27 @@
 package com.sango.microservices.client.util;
 
 import com.sango.microservices.client.model.Student;
-import com.sango.microservices.client.model.StudentResponse;
+import com.sango.microservices.client.model.StudentDTO;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 public class ObjectMapperUtility {
     private ObjectMapperUtility() {
     }
 
-    public static StudentResponse transformStudentToStudentResponse (Student student){
-        StudentResponse studentResponse = new StudentResponse();
-        studentResponse.setId(student.getId());
-        studentResponse.setName(student.getName());
-        studentResponse.setDob(student.getDob());
-        studentResponse.setStreet(student.getStreet());
-        studentResponse.setStreet2(student.getStreet2());
-        studentResponse.setState(student.getState());
-        studentResponse.setCity(student.getCity());
-        studentResponse.setZip(student.getZip());
-        studentResponse.setCourse(student.getCourse());
-        studentResponse.setAsOfDate(new Date());
-        return studentResponse;
+    public static StudentDTO transformStudentToStudentResponse (Student student){
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setId(student.getId());
+        studentDTO.setName(student.getName());
+        studentDTO.setDob(student.getDob());
+        studentDTO.setStreet(student.getStreet());
+        studentDTO.setStreet2(student.getStreet2());
+        studentDTO.setState(student.getState());
+        studentDTO.setCity(student.getCity());
+        studentDTO.setZip(student.getZip());
+        studentDTO.setCourse(student.getCourse());
+        studentDTO.setAsOfDate(new Date());
+        return studentDTO;
     }
 
 }

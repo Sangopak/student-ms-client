@@ -27,7 +27,7 @@ public class OauthService {
         parameters.add("username","john");
         parameters.add("password","123");
         parameters.add("grant_type","password");
-        parameters.add("client_id","barClientIdPassword");
+        parameters.add("client_id","studentClientIdPassword");
         HttpHeaders httpHeader = new HttpHeaders();
         httpHeader.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         httpHeader.add("Authorization","Basic "+ base64ClientCredentials);

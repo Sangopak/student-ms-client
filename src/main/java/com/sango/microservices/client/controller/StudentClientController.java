@@ -1,6 +1,7 @@
 package com.sango.microservices.client.controller;
 
 import com.sango.microservices.client.model.Student;
+import com.sango.microservices.client.model.StudentDTO;
 import com.sango.microservices.client.model.StudentResponse;
 import com.sango.microservices.client.repository.StudentRepository;
 import com.sango.microservices.client.service.OauthService;
@@ -36,29 +37,30 @@ public class StudentClientController {
 
 /*	Rest Template example where we need to define the response, url in the rest template */
 	@GetMapping(path="/resttemplate/students",produces="application/json")
-	public List<StudentResponse> getAllStudentsFromStudentDetail(){
-		String plainClientCredentials="barClientIdPassword:secret";
+	public StudentResponse getAllStudentsFromStudentDetail(){
+		String plainClientCredentials="studentClientIdPassword:secret";
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		httpHeaders.add("Authorization","Bearer "+oauthService.getOauthTokenFromAuthServer(plainClientCredentials));
 		HttpEntity<String> httpEntity = new HttpEntity<String>(httpHeaders);
-		ResponseEntity<StudentResponse [] > response = restTemplate.exchange("http://localhost:8080/v1/api/students",
+		ResponseEntity<StudentResponse> response = restTemplate.exchange("http://localhost:8080/v1/api/students",
 																						HttpMethod.GET,
 																						httpEntity,
-																						StudentResponse[].class);
-		return Arrays.asList(response.getBody());
+				StudentResponse.class);
+
+		return response.getBody();
 	}
 	
 	/*Feign Client approach is very clean where define a service proxy interface*/
 	@GetMapping(path="/students",produces="application/json")
-	public List<StudentResponse> getAllStudentsFromStudentDetailFeign(){
+	public List<StudentDTO> getAllStudentsFromStudentDetailFeign(){
 		List<Student> studentList = studentDetailProxyService.getAllStudents();
-		List<StudentResponse> response = new ArrayList<>();
+		List<StudentDTO> response = new ArrayList<>();
 		if (!studentList.isEmpty()) {
 			log.info("From getAllStudentsFromStudentDetailFeign response count: {} , will store data locally to handle failure scenarios",response.size());
 			try{
 				for (Student student: studentList) {
-					StudentResponse studentDetailResponse = ObjectMapperUtility.transformStudentToStudentResponse(student);
+					StudentDTO studentDetailResponse = ObjectMapperUtility.transformStudentToStudentResponse(student);
 					response.add(studentDetailResponse);
 				}
 				response.forEach(student -> studentRepository.save(student));
@@ -75,19 +77,19 @@ public class StudentClientController {
 	}
 	
 	@GetMapping(path="/students/{id}",produces="application/json")
-	public StudentResponse getStudentByIdFromStudentDetailFeign(@PathVariable String id) {
-		StudentResponse studentResponseById ;
+	public StudentDTO getStudentByIdFromStudentDetailFeign(@PathVariable String id) {
+		StudentDTO studentDTOById;
 		Optional<Student> studentById = studentDetailProxyService.getStudentById(id);
 		if(studentById.isPresent()){
-			studentResponseById = ObjectMapperUtility.transformStudentToStudentResponse(studentById.get());
+			studentDTOById = ObjectMapperUtility.transformStudentToStudentResponse(studentById.get());
 			log.info("From getStudentByIdFromStudentDetailFeign studentById: {} ",studentById);
 		}else {
-			Optional<StudentResponse> studentResponseByIdLocalDataStore = studentRepository.findById(UUID.fromString(id));
-			studentResponseById = studentResponseByIdLocalDataStore.isPresent()? studentResponseByIdLocalDataStore.get() : new StudentResponse();
+			Optional<StudentDTO> studentResponseByIdLocalDataStore = studentRepository.findById(UUID.fromString(id));
+			studentDTOById = studentResponseByIdLocalDataStore.isPresent()? studentResponseByIdLocalDataStore.get() : new StudentDTO();
 			log.info("From getStudentByIdFromStudentDetailFeign getting data from Local data store as fallback triggerd");
 		}
 
-		return studentResponseById;
+		return studentDTOById;
 	}
 	
 	
